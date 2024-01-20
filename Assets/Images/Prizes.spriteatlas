@@ -1,0 +1,82 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Prizes
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 3
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 128
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 1
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+      enableAlphaDilation: 0
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 2800000, guid: 3c81bb8ccb1c40d4c893bdf587f5ba4a, type: 3}
+    - {fileID: 2800000, guid: d861b79bdc3c2d04288f9347ab225dbc, type: 3}
+    - {fileID: 2800000, guid: b1ee4aa5c03c4c34d902ae89186c6e3d, type: 3}
+    - {fileID: 2800000, guid: 715b868067ff7e745ada70274c4f18c2, type: 3}
+    - {fileID: 2800000, guid: f4fa3195d559dc14896f541d3f735104, type: 3}
+    - {fileID: 2800000, guid: a07e89f87281362438462afc108a7078, type: 3}
+    - {fileID: 2800000, guid: e89ca400655d81f4f856a51be137537d, type: 3}
+    - {fileID: 2800000, guid: 1f98870847f9ca74aa5b67f1684b9dce, type: 3}
+    - {fileID: 2800000, guid: 6c145d52b50c2914791cca084136f857, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: e89ca400655d81f4f856a51be137537d, type: 3}
+  - {fileID: 21300000, guid: 715b868067ff7e745ada70274c4f18c2, type: 3}
+  - {fileID: 21300000, guid: 6c145d52b50c2914791cca084136f857, type: 3}
+  - {fileID: 21300000, guid: f4fa3195d559dc14896f541d3f735104, type: 3}
+  - {fileID: 21300000, guid: b1ee4aa5c03c4c34d902ae89186c6e3d, type: 3}
+  - {fileID: 21300000, guid: 1f98870847f9ca74aa5b67f1684b9dce, type: 3}
+  - {fileID: 21300000, guid: a07e89f87281362438462afc108a7078, type: 3}
+  - {fileID: 21300000, guid: d861b79bdc3c2d04288f9347ab225dbc, type: 3}
+  - {fileID: 21300000, guid: 3c81bb8ccb1c40d4c893bdf587f5ba4a, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - Raspberry
+  - Clover
+  - Star
+  - Lemon
+  - Cherries
+  - Seven
+  - Orange
+  - Banana
+  - Apple
+  m_RenderDataMap: {}
+  m_Tag: Prizes
+  m_IsVariant: 0

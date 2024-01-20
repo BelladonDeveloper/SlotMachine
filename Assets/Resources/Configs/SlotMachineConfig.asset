@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11d0914d14961c44fa3480a5661fc39d, type: 3}
+  m_Name: SlotMachineConfig
+  m_EditorClassIdentifier: 
+  _symbolsAtlas: {fileID: 4343727234628468602, guid: f292b6599ade81d4f8382185f599e42e, type: 2}
+  _prizes: 010000000200000003000000040000000500000006000000070000000800000009000000
