@@ -1,4 +1,4 @@
-namespace SlotMachine.Model
+namespace SlotMachine.Model.Data
 {
     public enum PrizeType
     {

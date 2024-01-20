@@ -8,12 +8,18 @@ namespace SlotMachine
 {
     using View;
     using Model;
+    using Model.Data;
     
     public class SlotMachineController : IInitiable
     {
+        public Action<int> OnWin;
+        
         private readonly SlotMachineModel _model;
         private readonly SlotMachineView _view;
         private readonly SlotMachineConfig _config;
+
+        private Dictionary<int, int> _nextPrizes;
+        private bool _isOnlySamePrizes;
 
         public SlotMachineController(SlotMachineModel model, SlotMachineView view, SlotMachineConfig config)
         {
@@ -35,13 +41,32 @@ namespace SlotMachine
 
         private void HandleTurned()
         {
-            Dictionary<int, int> nextPrizes = GetNextPrizes();
-            _view.Spin(nextPrizes);
+            _nextPrizes = GetNextPrizes();
+            _view.Spin(_nextPrizes);
         }
 
         private void CheckPrizes()
         {
+            bool isWin = true;
             
+            for (int i = 1; i < _nextPrizes.Count; i++)
+            {
+                if (_nextPrizes[i] != _nextPrizes[0])
+                {
+                    isWin = false;
+                    break;
+                }
+            }
+            
+            if (isWin)
+            {
+                int rewardAmount = _config.GetRewardAmount((PrizeType)_nextPrizes[0]);
+                OnWin?.Invoke(rewardAmount);
+            }
+            else
+            {
+                _view.Activate();
+            }
         }
 
         private Sprite[] GetSymbolSprites(SpriteAtlas spriteAtlas)
@@ -61,11 +86,16 @@ namespace SlotMachine
 
         private void Show()
         {
-            Dictionary<int, int> nextPrizes = GetNextPrizes();
-            _view.Show(nextPrizes);
+            _nextPrizes = GetNextPrizes();
+            _view.Show(_nextPrizes);
+        }
+
+        private Dictionary<int, int> GetNextPrizes()
+        {
+            return _model.GetNextPrizes(_view.ReelsCount, _config.Prizes.Count, _isOnlySamePrizes);            
         }
         
-        private Dictionary<int, int> GetNextPrizes() => _model.GetNextPrizes(_view.ReelsCount, _config.Prizes.Count);
+        public void GenerateOnlySamePrizes() => _isOnlySamePrizes = true;
 
         public void Dispose()
         {

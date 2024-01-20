@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -63,11 +62,15 @@ namespace SlotMachine.View
         private void ActivateAfterSpin()
         {
             _reels.OnAllReelsStopped -= ActivateAfterSpin;
-            _handle.ChangeInteractable(true);
             OnAllReelsStopped?.Invoke();
         }
 
         #endregion
+        
+        public void Activate()
+        {
+            _handle.ChangeInteractable(true);
+        }
         
         public void Dispose()
         {

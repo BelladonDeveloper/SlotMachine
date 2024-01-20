@@ -14,3 +14,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _symbolsAtlas: {fileID: 4343727234628468602, guid: f292b6599ade81d4f8382185f599e42e, type: 2}
   _prizes: 010000000200000003000000040000000500000006000000070000000800000009000000
+  _rewardAmounts:
+  - WinType: 1
+    Amount: 1
+  - WinType: 2
+    Amount: 2
+  - WinType: 3
+    Amount: 3
+  - WinType: 4
+    Amount: 4
+  - WinType: 5
+    Amount: 5
+  - WinType: 6
+    Amount: 6
+  - WinType: 7
+    Amount: 9
+  - WinType: 8
+    Amount: 7
+  - WinType: 9
+    Amount: 77
