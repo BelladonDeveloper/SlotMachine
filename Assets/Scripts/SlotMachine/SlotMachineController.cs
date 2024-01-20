@@ -35,7 +35,6 @@ namespace SlotMachine
 
         private void HandleTurned()
         {
-            Debug.Log("Handle turned");
             Dictionary<int, int> nextPrizes = GetNextPrizes();
             _view.Spin(nextPrizes);
         }
