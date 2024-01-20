@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 namespace SlotMachine.View
 {
+    using Animators;
+    
     public class Reel : MonoBehaviour
     {
         public Action OnStopped;

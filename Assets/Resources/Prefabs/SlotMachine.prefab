@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8386364387177250933}
   - component: {fileID: 4365269739301514322}
   - component: {fileID: 8174588199924508666}
+  - component: {fileID: 482342312670664267}
   - component: {fileID: 5691611457090911160}
   m_Layer: 5
   m_Name: Handle
@@ -37,8 +38,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -464.2861, y: 107.12244}
-  m_SizeDelta: {x: 113.9114, y: 363.686}
+  m_AnchoredPosition: {x: 465, y: 97}
+  m_SizeDelta: {x: 95, y: 347}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8386364387177250933
 CanvasRenderer:
@@ -61,14 +62,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 539d749dc69053f498b4330125a31860, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -122,6 +123,27 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!95 &482342312670664267
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6863335181342152707}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 9ba2db69131668843ba367578af4e0db, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &5691611457090911160
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -134,7 +156,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3161e513106d574418dd1f3737dc1d48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _image: {fileID: 4365269739301514322}
   _button: {fileID: 8174588199924508666}
+  _animator: {fileID: 482342312670664267}
 --- !u!1 &8123789506485626075
 GameObject:
   m_ObjectHideFlags: 0

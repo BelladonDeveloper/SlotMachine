@@ -26,6 +26,7 @@ namespace SlotMachine.View
             _sprites = sprites;
             _reels.ForEach(r => r.Init(sprites));
             
+            _handle.Init();
             _handle.ChangeInteractable(false);
             _handle.OnClick += TurnHandle;
         }

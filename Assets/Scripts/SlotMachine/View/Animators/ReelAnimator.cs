@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
-namespace SlotMachine.View
+namespace SlotMachine.View.Animators
 {
     public class ReelAnimator
     {
