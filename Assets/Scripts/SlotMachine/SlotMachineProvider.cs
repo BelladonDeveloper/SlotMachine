@@ -1,6 +1,6 @@
 using System;
 using UnityEngine;
-using Base;
+using Base.Animators;
 
 namespace SlotMachine
 {
@@ -15,11 +15,13 @@ namespace SlotMachine
         public event Action<int> OnWin;
         
         [SerializeField] private Transform _parent;
+        [SerializeField] private RewardAnimator _rewardAnimator;
 
         private SlotMachineController _controller;
 
         private void Start()
         {
+            _rewardAnimator.OnAnimationEnded += ActivateAfterReward;
             ShowSlotMachine();
         }
 
@@ -27,7 +29,6 @@ namespace SlotMachine
         {
             GameObject prefab = Resources.Load<GameObject>(PREFAB_PATH);
             GameObject slotMachine = Instantiate(prefab, _parent);
-            //slotMachine.transform.SetAsFirstSibling();
             SlotMachineView view = slotMachine.GetComponent<SlotMachineView>();
             SlotMachineModel model = new SlotMachineModel();
             SlotMachineConfig config = Resources.Load<SlotMachineConfig>(CONFIG_PATH);
@@ -41,14 +42,25 @@ namespace SlotMachine
             OnWin?.Invoke(rewardAmount);
         }
 
+        private void ActivateAfterReward()
+        {
+            _controller.ActivateAfterReward();
+        }
+
         /// <summary>
         /// Generate always win combination for testing
         /// </summary>
         public void GenerateOnlySamePrizes() => _controller.GenerateOnlySamePrizes();
 
-        public void Dispose()
+        private void OnDestroy()
+        {
+            Dispose();
+        }
+
+        private void Dispose()
         {
             _controller.Dispose();
+            _rewardAnimator.OnAnimationEnded -= ActivateAfterReward;
         }
     }
 }

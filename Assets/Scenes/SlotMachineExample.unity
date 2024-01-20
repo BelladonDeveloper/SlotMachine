@@ -743,6 +743,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _parent: {fileID: 1164249529}
+  _rewardAnimator: {fileID: 1271494102}
 --- !u!4 &1209795719
 Transform:
   m_ObjectHideFlags: 0

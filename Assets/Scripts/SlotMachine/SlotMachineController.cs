@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.U2D;
-using Base;
 
 namespace SlotMachine
 {
@@ -10,7 +9,7 @@ namespace SlotMachine
     using Model;
     using Model.Data;
     
-    public class SlotMachineController : IInitiable
+    public class SlotMachineController
     {
         public Action<int> OnWin;
         
@@ -93,6 +92,11 @@ namespace SlotMachine
         private Dictionary<int, int> GetNextPrizes()
         {
             return _model.GetNextPrizes(_view.ReelsCount, _config.Prizes.Count, _isOnlySamePrizes);            
+        }
+
+        public void ActivateAfterReward()
+        {
+            _view.Activate();
         }
         
         public void GenerateOnlySamePrizes() => _isOnlySamePrizes = true;

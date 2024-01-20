@@ -11,7 +11,7 @@ namespace Base.Animators
     {
         private const string PREFAB_PATH = "Prefabs/Reward";
         private const float INTERVAL = 0.1f;
-        private const float FLY_DURATION = 1f;
+        private const float FLY_DURATION = 0.5f;
         
         public event Action OnAnimationEnded;
         
@@ -32,16 +32,38 @@ namespace Base.Animators
         {
             Sequence flyTo = DOTween.Sequence();
             
+            Vector3 position = transform.position;
+            Vector3[] path = CreatePath(position, _target);
             for (int i = 0; i < rewardAmount; i++)
             {
                 GameObject reward = Instantiate(_prefab, transform);
-                reward.transform.position = transform.position;
-                flyTo.Join(reward.transform.DOMove(_target, FLY_DURATION).SetEase(Ease.InOutSine));
-                //flyTo.AppendInterval(INTERVAL);
+                reward.transform.position = position;
+                flyTo.Join(reward.transform.DOPath(path, FLY_DURATION)
+                    .SetEase(Ease.InOutQuad)
+                    .SetDelay(INTERVAL)
+                    .OnComplete(() => Destroy(reward)));
             }
             
             flyTo.OnComplete(OnAnimationEndedHandler);
             flyTo.Play();
+        }
+        
+        private Vector3[] CreatePath(Vector3 start, Vector3 end, int resolution = 10)
+        {
+            Vector3[] path = new Vector3[resolution];
+            float timeStep = 1f / (resolution - 1);
+            float parabolaHeight = Mathf.Abs(end.x - start.x) / 2f;
+
+            for (int i = 0; i < resolution; i++)
+            {
+                float t = i * timeStep;
+                Vector3 pointOnLine = Vector3.Lerp(start, end, t);
+                float parabolaX = 4 * parabolaHeight * t * (1 - t);
+
+                path[i] = new Vector3(start.x + (end.x - start.x) * t - parabolaX, pointOnLine.y, pointOnLine.z);
+            }
+
+            return path;
         }
 
         private void OnAnimationEndedHandler()
