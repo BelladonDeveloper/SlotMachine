@@ -72,8 +72,8 @@ namespace SlotMachine.View.Animators
             Sequence spinOneStep = DOTween.Sequence();
             for (int j = 0; j < _symbols.Count - 1; j++)
             {
-                spinOneStep.Join(_symbols[j].rectTransform.DOAnchorPosY(
-                    _symbols[j + 1].rectTransform.anchoredPosition.y, _spinStepDuration).SetEase(Ease.Linear));
+                spinOneStep.Join(_symbols[j].transform.DOLocalMoveY(
+                    _symbols[j + 1].transform.localPosition.y, _spinStepDuration).SetEase(Ease.Linear));
             }
 
             spinOneStep.OnComplete(() =>
@@ -128,9 +128,9 @@ namespace SlotMachine.View.Animators
 
         private void ChangePosition(Image lastSymbol)
         {
-            Vector2 resetPosition = _symbols[1].rectTransform.anchoredPosition;
-            resetPosition.y += lastSymbol.rectTransform.sizeDelta.y;
-            lastSymbol.rectTransform.anchoredPosition = resetPosition;
+            Vector3 resetPosition = _symbols[1].transform.localPosition;
+            resetPosition.y += lastSymbol.preferredHeight;
+            lastSymbol.transform.localPosition = resetPosition;
         }
 
         public void MakeSlowly()

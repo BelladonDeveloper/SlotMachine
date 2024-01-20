@@ -25,6 +25,13 @@ namespace SlotMachine.View
             _sprites = sprites;
             _animator = new ReelAnimator();
             _animator.Init(_symbols, _sprites);
+            SetSlotStartPositions();
+        }
+        
+        private void SetSlotStartPositions()
+        {
+            _symbols[0].rectTransform.anchoredPosition += Vector2.up * _symbols[0].rectTransform.rect.height;
+            _symbols[^1].rectTransform.anchoredPosition -= Vector2.up * _symbols[^1].rectTransform.rect.height;
         }
         
         public void Show(Sprite[] symbols, int prize)

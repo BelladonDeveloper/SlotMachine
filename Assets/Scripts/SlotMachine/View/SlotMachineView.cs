@@ -7,25 +7,20 @@ namespace SlotMachine.View
 {
     public class SlotMachineView : MonoBehaviour
     {
-        private const float REELS_START_INTERVAL = 0.5f;
-        
         public event Action OnHandleTurned;
         public event Action OnAllReelsStopped;
         
         public int ReelsCount => _reels.Count;
         
         [SerializeField] private Handle _handle;
-        [SerializeField] private List<Reel> _reels;
+        [SerializeField] private ReelsView _reels;
         
         private Sprite[] _sprites;
-        
-        private int _stoppedReelsCount;
         
         public void Init(Sprite[] sprites)
         {
             _sprites = sprites;
-            _reels.ForEach(r => r.Init(sprites));
-            
+            _reels.Init(_sprites);
             _handle.Init();
             _handle.ChangeInteractable(false);
             _handle.OnClick += TurnHandle;
@@ -35,6 +30,8 @@ namespace SlotMachine.View
         {
             OnHandleTurned?.Invoke();
         }
+
+        #region SHOW_START_STATE
 
         public void Show(Dictionary<int, int> nextPrizes)
         {
@@ -47,93 +44,30 @@ namespace SlotMachine.View
             _handle.Show();
             _handle.ChangeInteractable(true);
         }
-
+        
         private void ShowReels(Dictionary<int, int> nextPrizes)
         {
-            for (int i = 0; i < _reels.Count; i++)
-            {
-                if (nextPrizes.TryGetValue(i, out int prize))
-                {
-                    ShowReel(_reels[i], prize);
-                }
-                else
-                {
-                    Debug.LogWarning($"No next prizes for reel {i}");
-                }
-            }
+            _reels.Show(nextPrizes);
         }
 
-        private void ShowReel(Reel reel, int prize)
-        {
-            int count = reel.SymbolsCount;
-            Sprite[] sprites = GetSprites(prize, count);
-            reel.Show(sprites, prize);
-        }
+        #endregion
 
-        private Sprite[] GetSprites(int middle, int length)
-        {
-            Sprite[] sprites = new Sprite[length];
-            
-            int startIndex = middle - length / 2;
-            if (startIndex < 0)
-            {
-                startIndex += _sprites.Length;
-            }
-            
-            for (int i = 0; i < length; i++)
-            {
-                int index = (startIndex + i) % _sprites.Length;
-                sprites[i] = _sprites[index];
-            }
-
-            return sprites;
-        }
+        #region SPIN
 
         public void Spin(Dictionary<int, int> nextPrizes)
         {
-            SpinReels(nextPrizes);
+            _reels.OnAllReelsStopped += ActivateAfterSpin;
+            _reels.Spin(nextPrizes);
         }
 
-        private void SpinReels(Dictionary<int, int> nextPrizes)
+        private void ActivateAfterSpin()
         {
-            StartCoroutine(SpinReelsWithInterval(nextPrizes));
-        }
-        
-        private IEnumerator SpinReelsWithInterval(Dictionary<int, int> nextPrizes)
-        {
-            for (int i = 0; i < _reels.Count; i++)
-            {
-                yield return new WaitForSeconds(REELS_START_INTERVAL);
-                
-                if (nextPrizes.TryGetValue(i, out int prize))
-                {
-                    _reels[i].OnStopped += IncreaseStoppedReels;
-                    SpinReel(_reels[i], prize);
-                }
-                else
-                {
-                    Debug.LogWarning($"No next prizes for reel {i}");
-                }
-            }
+            _reels.OnAllReelsStopped -= ActivateAfterSpin;
+            _handle.ChangeInteractable(true);
+            OnAllReelsStopped?.Invoke();
         }
 
-        private void IncreaseStoppedReels()
-        {
-            _stoppedReelsCount++;
-            if (_stoppedReelsCount == _reels.Count)
-            {
-                _stoppedReelsCount = 0;
-                _reels.ForEach(r => r.OnStopped -= IncreaseStoppedReels);
-                
-                OnAllReelsStopped?.Invoke();
-                _handle.ChangeInteractable(true);
-            }
-        }
-
-        private void SpinReel(Reel reel, int prize)
-        {
-            reel.Spin(prize);
-        }
+        #endregion
         
         public void Dispose()
         {
