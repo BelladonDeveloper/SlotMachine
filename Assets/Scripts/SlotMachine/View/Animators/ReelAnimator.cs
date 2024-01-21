@@ -11,14 +11,20 @@ namespace SlotMachine.View.Animators
     {
         private const float ONE_SPIN_QUICK_DURATION = 0.02f;
         
-        public int CurrentPrize => _currentPrize;
+        /// <summary>
+        /// Returns the current symbol number
+        /// </summary>
+        public int CurrentSymbol => _currentSymbol;
         
+        /// <summary>
+        /// Invoked when the reel is stopped after spinning
+        /// </summary>
         private Action _onComplete;
 
         private List<Image> _symbols;
         private Sprite[] _sprites;
         
-        private int _currentPrize;
+        private int _currentSymbol;
         private int _stepCounter;
         private int _spinCounter;
         private int _spinCount;
@@ -31,6 +37,10 @@ namespace SlotMachine.View.Animators
             _sprites = sprites;
         }
 
+        /// <summary>
+        /// Start spinning
+        /// </summary>
+        /// <param name="onComplete"> Will be invoked after the animation is completed </param>
         public void SpinQuickly(Action onComplete)
         {
             _onComplete = onComplete;
@@ -40,33 +50,10 @@ namespace SlotMachine.View.Animators
             SpinOneStep(IncrementStepCounter);
         }
 
-        private void IncrementStepCounter()
-        {
-            _stepCounter++;
-            if (_stepCounter < _symbols.Count)
-            {
-                SpinOneStep(IncrementStepCounter);
-            }
-            else
-            {
-                IncrementSpinCounter();
-            }
-        }
-        
-        private void IncrementSpinCounter()
-        {
-            _spinCounter++;
-            if (_spinCounter < _spinCount)
-            {
-                _stepCounter = 0;
-                SpinOneStep(IncrementStepCounter);
-            }
-            else
-            {
-                _onComplete?.Invoke();
-            }
-        }
-
+        /// <summary>
+        /// One step is only rotate one symbol
+        /// </summary>
+        /// <param name="onComplete"></param>
         public void SpinOneStep(Action onComplete)
         {
             Sequence spinOneStep = DOTween.Sequence();
@@ -76,15 +63,21 @@ namespace SlotMachine.View.Animators
                     _symbols[j + 1].transform.localPosition.y, _spinStepDuration).SetEase(Ease.Linear));
             }
 
-            spinOneStep.OnComplete(() =>
+            spinOneStep.OnComplete(OnStepCompleted);
+            spinOneStep.Play();
+            
+            void OnStepCompleted()
             {
                 spinOneStep.Kill();
                 RearrangeSymbols();
                 onComplete?.Invoke();
-            });
-            spinOneStep.Play();
+            }
         }
 
+        /// <summary>
+        /// Teleport the last symbol to the top.
+        /// Change the sprite of the top symbol
+        /// </summary>
         private void RearrangeSymbols()
         {
             Image lastSymbol = _symbols[^1];
@@ -106,18 +99,25 @@ namespace SlotMachine.View.Animators
             _symbols[0].sprite = _sprites[topPrize];
         }
 
+        /// <summary>
+        /// Determine the next symbol number always in the range of the sprites array
+        /// </summary>
         private void DecrementCurrentPrize()
         {
-            _currentPrize--;
-            if (_currentPrize < 0)
+            _currentSymbol--;
+            if (_currentSymbol < 0)
             {
-                _currentPrize += _sprites.Length;
+                _currentSymbol += _sprites.Length;
             }
         }
 
+        /// <summary>
+        /// Search the sprite for the top symbol
+        /// </summary>
+        /// <returns></returns>
         private int GetTopPrize()
         {
-            int topPrize = _currentPrize - _symbols.Count / 2;
+            int topPrize = _currentSymbol - _symbols.Count / 2;
             if (topPrize < 0)
             {
                 topPrize += _sprites.Length;
@@ -133,11 +133,47 @@ namespace SlotMachine.View.Animators
             lastSymbol.transform.localPosition = resetPosition;
         }
 
+        /// <summary>
+        /// Each step is one symbol rotation
+        /// </summary>
+        private void IncrementStepCounter()
+        {
+            _stepCounter++;
+            if (_stepCounter < _symbols.Count)
+            {
+                SpinOneStep(IncrementStepCounter);
+            }
+            else
+            {
+                IncrementSpinCounter();
+            }
+        }
+        
+        /// <summary>
+        /// Each spin is one full rotation of all symbols
+        /// </summary>
+        private void IncrementSpinCounter()
+        {
+            _spinCounter++;
+            if (_spinCounter < _spinCount)
+            {
+                _stepCounter = 0;
+                SpinOneStep(IncrementStepCounter);
+            }
+            else
+            {
+                _onComplete?.Invoke();
+            }
+        }
+
         public void MakeSlowly()
         {
             _spinStepDuration += ONE_SPIN_QUICK_DURATION;
         }
 
+        /// <summary>
+        /// Set the speed of the reel to the initial value
+        /// </summary>
         public void ResetSpeed()
         {
             _spinStepDuration = ONE_SPIN_QUICK_DURATION;

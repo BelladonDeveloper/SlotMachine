@@ -1,6 +1,6 @@
 namespace Base
 {
-    public interface IInitiable
+    public interface IManager
     {
         void Init();
         void Dispose();

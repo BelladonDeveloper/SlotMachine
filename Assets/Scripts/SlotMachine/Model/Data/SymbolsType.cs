@@ -1,6 +1,6 @@
 namespace SlotMachine.Model.Data
 {
-    public enum PrizeType
+    public enum SymbolsType
     {
         None,
         Banana,

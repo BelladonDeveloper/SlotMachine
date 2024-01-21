@@ -5,12 +5,21 @@ using UnityEngine;
 
 namespace SlotMachine.View
 {
+    /// <summary>
+    /// Show all the reels start state and spin them
+    /// </summary>
     public class ReelsView : MonoBehaviour
     {
         private const float REELS_START_INTERVAL = 0.5f;
         
+        /// <summary>
+        /// Invoked when all the reels are stopped
+        /// </summary>
         public Action OnAllReelsStopped;
 
+        /// <summary>
+        /// Returns the number of reels in the slot machine
+        /// </summary>
         public int Count => _reels.Count;
 
         [SerializeField] private List<Reel> _reels;
@@ -19,6 +28,10 @@ namespace SlotMachine.View
 
         private int _stoppedReelsCount;
 
+        /// <summary>
+        /// Init all reels
+        /// </summary>
+        /// <param name="sprites"> All these sprites will be used on reels </param>
         public void Init(Sprite[] sprites)
         {
             _sprites = sprites;
@@ -27,28 +40,43 @@ namespace SlotMachine.View
 
         #region SHOW_START_STATE
 
-        public void Show(Dictionary<int, int> nextPrizes)
+        /// <summary>
+        /// Set the start state of the reels
+        /// </summary>
+        /// <param name="startSymbols"></param>
+        public void Show(Dictionary<int, int> startSymbols)
         {
             for (int i = 0; i < _reels.Count; i++)
             {
-                if (nextPrizes.TryGetValue(i, out int prize))
+                if (startSymbols.TryGetValue(i, out int prize))
                 {
                     ShowReel(_reels[i], prize);
                 }
                 else
                 {
-                    Debug.LogWarning($"No next prizes for reel {i}");
+                    Debug.LogWarning($"No next Symbols for reel {i}");
                 }
             }
         }
 
-        private void ShowReel(Reel reel, int prize)
+        /// <summary>
+        /// Show the reel with the symbol in the middle
+        /// </summary>
+        /// <param name="reel"></param>
+        /// <param name="symbol"> Symbol in the middle of the reel </param>
+        private void ShowReel(Reel reel, int symbol)
         {
             int count = reel.SymbolsCount;
-            Sprite[] sprites = GetSprites(prize, count);
-            reel.Show(sprites, prize);
+            Sprite[] sprites = GetSprites(symbol, count);
+            reel.Show(sprites, symbol);
         }
 
+        /// <summary>
+        /// Get the sprites for the each image on the reel object
+        /// </summary>
+        /// <param name="middle"> Symbol in the middle of the reel </param>
+        /// <param name="length"> Images count on the reel object </param>
+        /// <returns></returns>
         private Sprite[] GetSprites(int middle, int length)
         {
             Sprite[] sprites = new Sprite[length];
@@ -72,29 +100,41 @@ namespace SlotMachine.View
 
         #region SPIN
 
-        public void Spin(Dictionary<int, int> nextPrizes)
+        /// <summary>
+        /// Spin all reels to the next symbols one by one
+        /// </summary>
+        /// <param name="nextSymbols"> The symbols will be shown in the middle of reels </param>
+        public void Spin(Dictionary<int, int> nextSymbols)
         {
-            StartCoroutine(SpinReelsWithInterval(nextPrizes));
+            StartCoroutine(SpinReelsWithInterval(nextSymbols));
         }
 
-        private IEnumerator SpinReelsWithInterval(Dictionary<int, int> nextPrizes)
+        /// <summary>
+        /// Set the interval between reels spinning
+        /// </summary>
+        /// <param name="nextSymbols"></param>
+        /// <returns></returns>
+        private IEnumerator SpinReelsWithInterval(Dictionary<int, int> nextSymbols)
         {
             for (int i = 0; i < _reels.Count; i++)
             {
                 yield return new WaitForSeconds(REELS_START_INTERVAL);
 
-                if (nextPrizes.TryGetValue(i, out int prize))
+                if (nextSymbols.TryGetValue(i, out int prize))
                 {
                     _reels[i].OnStopped += IncreaseStoppedReels;
                     SpinReel(_reels[i], prize);
                 }
                 else
                 {
-                    Debug.LogWarning($"No next prizes for reel {i}");
+                    Debug.LogWarning($"No next Symbols for reel {i}");
                 }
             }
         }
 
+        /// <summary>
+        /// Count the stopped reels.
+        /// </summary>
         private void IncreaseStoppedReels()
         {
             _stoppedReelsCount++;

@@ -6,9 +6,19 @@ namespace SlotMachine.View
 {
     public class SlotMachineView : MonoBehaviour
     {
+        /// <summary>
+        /// Called when a player turns the handle
+        /// </summary>
         public event Action OnHandleTurned;
+        /// <summary>
+        /// Called when all the reels are stopped.
+        /// And we need to make decision about the win or continue the game
+        /// </summary>
         public event Action OnAllReelsStopped;
         
+        /// <summary>
+        /// Returns the number of reels in the slot machine
+        /// </summary>
         public int ReelsCount => _reels.Count;
         
         [SerializeField] private Handle _handle;
@@ -16,26 +26,34 @@ namespace SlotMachine.View
         
         private Sprite[] _sprites;
         
+        /// <summary>
+        /// Init all components and subscribe to events
+        /// </summary>
+        /// <param name="sprites"> All these sprites will be used on reels </param>
         public void Init(Sprite[] sprites)
         {
             _sprites = sprites;
             _reels.Init(_sprites);
             _handle.Init();
             _handle.ChangeInteractable(false);
-            _handle.OnClick += TurnHandle;
+            _handle.OnClick += HandleTurned;
         }
 
-        private void TurnHandle()
+        private void HandleTurned()
         {
             OnHandleTurned?.Invoke();
         }
 
         #region SHOW_START_STATE
 
-        public void Show(Dictionary<int, int> nextPrizes)
+        /// <summary>
+        /// Show the slot machine in the start state
+        /// </summary>
+        /// <param name="currentSymbols"> Symbols for initialize reels </param>
+        public void Show(Dictionary<int, int> currentSymbols)
         {
             ShowHandle();
-            ShowReels(nextPrizes);
+            ShowReels(currentSymbols);
         }
         
         private void ShowHandle()
@@ -44,29 +62,36 @@ namespace SlotMachine.View
             _handle.ChangeInteractable(true);
         }
         
-        private void ShowReels(Dictionary<int, int> nextPrizes)
+        private void ShowReels(Dictionary<int, int> nextSymbols)
         {
-            _reels.Show(nextPrizes);
+            _reels.Show(nextSymbols);
         }
 
         #endregion
 
         #region SPIN
 
-        public void Spin(Dictionary<int, int> nextPrizes)
+        /// <summary>
+        /// Spin all reels to the next symbols
+        /// </summary>
+        /// <param name="nextSymbols"></param>
+        public void Spin(Dictionary<int, int> nextSymbols)
         {
-            _reels.OnAllReelsStopped += ActivateAfterSpin;
-            _reels.Spin(nextPrizes);
+            _reels.OnAllReelsStopped += InvokeAllReelsStopped;
+            _reels.Spin(nextSymbols);
         }
 
-        private void ActivateAfterSpin()
+        private void InvokeAllReelsStopped()
         {
-            _reels.OnAllReelsStopped -= ActivateAfterSpin;
+            _reels.OnAllReelsStopped -= InvokeAllReelsStopped;
             OnAllReelsStopped?.Invoke();
         }
 
         #endregion
         
+        /// <summary>
+        /// Activate all interactable elements
+        /// </summary>
         public void Activate()
         {
             _handle.ChangeInteractable(true);
@@ -74,7 +99,7 @@ namespace SlotMachine.View
         
         public void Dispose()
         {
-            _handle.OnClick -= TurnHandle;
+            _handle.OnClick -= HandleTurned;
         }
     }
 }

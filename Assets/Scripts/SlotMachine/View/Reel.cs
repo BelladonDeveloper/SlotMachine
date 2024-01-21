@@ -9,8 +9,14 @@ namespace SlotMachine.View
     
     public class Reel : MonoBehaviour
     {
+        /// <summary>
+        /// Called when the reel is stopped after spinning
+        /// </summary>
         public Action OnStopped;
         
+        /// <summary>
+        /// Returns the number of symbols on the reel
+        /// </summary>
         public int SymbolsCount => _symbols.Count;
         
         [SerializeField] private List<Image> _symbols;
@@ -28,15 +34,24 @@ namespace SlotMachine.View
             SetSlotStartPositions();
         }
         
+        /// <summary>
+        /// Set the start positions of the first and the last slots.
+        /// Needs for the correct anchor position
+        /// </summary>
         private void SetSlotStartPositions()
         {
             _symbols[0].rectTransform.anchoredPosition += Vector2.up * _symbols[0].rectTransform.rect.height;
             _symbols[^1].rectTransform.anchoredPosition -= Vector2.up * _symbols[^1].rectTransform.rect.height;
         }
         
-        public void Show(Sprite[] symbols, int prize)
+        /// <summary>
+        /// Show the reel with the symbols
+        /// </summary>
+        /// <param name="symbols"></param>
+        /// <param name="middleSymbol"></param>
+        public void Show(Sprite[] symbols, int middleSymbol)
         {
-            _currentPrize = prize;
+            _currentPrize = middleSymbol;
             for (int i = 0; i < _symbols.Count && i < symbols.Length; i++)
             {
                 if (symbols[i] != null)
@@ -51,21 +66,31 @@ namespace SlotMachine.View
             gameObject.SetActive(true);
         }
 
-        public void Spin(int value)
+        /// <summary>
+        /// Start spinning the reel
+        /// </summary>
+        /// <param name="middleValue"></param>
+        public void Spin(int middleValue)
         {
-            _currentNextPrize = value;
+            _currentNextPrize = middleValue;
             _animator.SpinQuickly(SpinToValue);
         }
 
+        /// <summary>
+        /// Spin slowly to the target value
+        /// </summary>
         private void SpinToValue()
         {
             _animator.MakeSlowly();
             _animator.SpinOneStep(CheckStopped);
         }
 
+        /// <summary>
+        /// Approve the stopped state or continue slowly spinning
+        /// </summary>
         private void CheckStopped()
         {
-            if (_animator.CurrentPrize == _currentNextPrize)
+            if (_animator.CurrentSymbol == _currentNextPrize)
             {
                 _currentPrize = _currentNextPrize;
                 _currentNextPrize = -1;

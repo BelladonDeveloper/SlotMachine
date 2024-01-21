@@ -10,18 +10,30 @@ namespace SlotMachine
     public class SlotMachineConfig : ScriptableObject
     {
         [SerializeField] private SpriteAtlas _symbolsAtlas;
-        [SerializeField] private List<PrizeType> _prizes;
+        [SerializeField] private List<SymbolsType> _symbols;
         [SerializeField] private List<Reward> _rewardAmounts;
         
+        /// <summary>
+        /// Sprite atlas only with prize symbols
+        /// </summary>
         public SpriteAtlas SymbolsAtlas => _symbolsAtlas;
-        public List<PrizeType> Prizes => _prizes;
+        
+        /// <summary>
+        /// Include only symbols which you want to see on the reels
+        /// </summary>
+        public List<SymbolsType> Symbols => _symbols;
 
-        public int GetRewardAmount(PrizeType prizeType)
+        /// <summary>
+        /// The list of rewards for each prize type
+        /// </summary>
+        /// <param name="symbolsType"> Rewarded prize type</param>
+        /// <returns> Reward amount </returns>
+        public int GetRewardAmount(SymbolsType symbolsType)
         {
-            Reward reward = _rewardAmounts.Find(x => x.WinType == prizeType);
+            Reward reward = _rewardAmounts.Find(x => x.WinType == symbolsType);
             if (reward == null)
             {
-                Debug.LogError($"Reward for {prizeType} not found");
+                Debug.LogError($"Reward for {symbolsType} not found");
                 return 0;
             }
             

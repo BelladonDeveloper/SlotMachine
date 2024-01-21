@@ -6,7 +6,7 @@ SpriteAtlas:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Prizes
+  m_Name: Symbols
   m_EditorData:
     serializedVersion: 2
     textureSettings:
@@ -78,5 +78,5 @@ SpriteAtlas:
   - Banana
   - Apple
   m_RenderDataMap: {}
-  m_Tag: Prizes
+  m_Tag: Symbols
   m_IsVariant: 0

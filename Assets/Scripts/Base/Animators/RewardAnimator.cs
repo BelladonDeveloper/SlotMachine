@@ -1,13 +1,11 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using SlotMachine;
 
 namespace Base.Animators
 {
-    public class RewardAnimator : MonoBehaviour
+    public class RewardAnimator : MonoBehaviour, IManager
     {
         private const string PREFAB_PATH = "Prefabs/Reward";
         private const float INTERVAL = 0.1f;
@@ -15,16 +13,15 @@ namespace Base.Animators
         
         public event Action OnAnimationEnded;
         
-        [SerializeField] private Transform _rewardParent;
-        [SerializeField] private SlotMachineProvider _slotMachineProvider;
-        
         private Vector3 _target;
         private GameObject _prefab;
-        
-        private void Start()
+        private ISlotMachineProvider _slotMachineProvider;
+
+        public void Init()
         {
+            _slotMachineProvider = Register.Get<ISlotMachineProvider>();
             _slotMachineProvider.OnWin += Show;
-            _target = _rewardParent.position;
+            _target = Register.Get<IUIManager>().GetRewardTarget().position;
             _prefab = Resources.Load<GameObject>(PREFAB_PATH);
         }
 
@@ -70,8 +67,8 @@ namespace Base.Animators
         {
             OnAnimationEnded?.Invoke();
         }
-        
-        private void OnDestroy()
+
+        public void Dispose()
         {
             _slotMachineProvider.OnWin -= Show;
         }

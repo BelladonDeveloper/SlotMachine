@@ -20,12 +20,18 @@ namespace SlotMachine.View.Animators
             _image = image;
         }
 
+        /// <summary>
+        /// Start the handle turning animation and partly fade the handle
+        /// </summary>
         public void Turn()
         {
             _animator.SetTrigger(TurnDown);
             _image.DOColor(FADED_COLOR, FADE_DURATION).SetEase(Ease.InOutFlash);
         }
         
+        /// <summary>
+        /// Return start color
+        /// </summary>
         public void MarkActive()
         {
             _image.DOColor(Color.white, ACTIVATE_DURATION);
