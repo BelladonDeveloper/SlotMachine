@@ -10,6 +10,7 @@ namespace Base
         [SerializeField] private RewardAnimator _rewardAnimator;
         [SerializeField] private SlotMachineProvider _slotMachineProvider;
         [SerializeField] private UIManager _uiManager;
+        [SerializeField] private SoundManager _soundManager;
     
         private List<IManager> _managers = new List<IManager>();
 
@@ -25,9 +26,11 @@ namespace Base
             Register.Add(_rewardAnimator);
             Register.Add<ISlotMachineProvider>(_slotMachineProvider);
             Register.Add<IUIManager>(_uiManager);
+            Register.Add<ISoundManager>(_soundManager);
             _managers.Add(_rewardAnimator);
             _managers.Add(_slotMachineProvider);
             _managers.Add(_uiManager);
+            _managers.Add(_soundManager);
         }
 
         private void InitializeManagers()
@@ -42,6 +45,7 @@ namespace Base
             Register.Remove(_rewardAnimator);
             Register.Remove<ISlotMachineProvider>(_slotMachineProvider);
             Register.Remove<IUIManager>(_uiManager);
+            Register.Remove<ISoundManager>(_soundManager);
         }
 
         private void OnDestroy()

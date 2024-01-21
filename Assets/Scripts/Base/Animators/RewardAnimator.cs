@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using DG.Tweening;
 using SlotMachine;
+using UnityEngine.UI;
 
 namespace Base.Animators
 {
@@ -27,22 +28,41 @@ namespace Base.Animators
 
         private void Show(int rewardAmount)
         {
-            Sequence flyTo = DOTween.Sequence();
+            Register.Get<ISoundManager>().PlaySound(SoundName.RewardFlying);
             
+            Sequence flyTo = DOTween.Sequence();
             Vector3 position = transform.position;
             Vector3[] path = CreatePath(position, _target);
+            
             for (int i = 0; i < rewardAmount; i++)
             {
-                GameObject reward = Instantiate(_prefab, transform);
-                reward.transform.position = position;
-                flyTo.Join(reward.transform.DOPath(path, FLY_DURATION)
-                    .SetEase(Ease.InOutQuad)
-                    .SetDelay(INTERVAL)
-                    .OnComplete(() => Destroy(reward)));
+                Sequence flyToTarget = FlyToTarget(position, path);
+                flyTo.Join(flyToTarget)
+                    .SetDelay(INTERVAL);
             }
             
             flyTo.OnComplete(OnAnimationEndedHandler);
             flyTo.Play();
+        }
+
+        private Sequence FlyToTarget(Vector3 position, Vector3[] path)
+        {
+            Sequence flyTo = DOTween.Sequence();
+            GameObject reward = Instantiate(_prefab, transform);
+            reward.transform.position = position;
+            reward.transform.localScale = Vector3.one / 4f;
+            Image image = reward.GetComponentInChildren<Image>();
+            image.color = new Color(image.color.r, image.color.g, image.color.b, 0f);
+                
+            flyTo.Append(image.DOFade(1f, FLY_DURATION / 2f));
+            flyTo.Append(reward.transform.DOScale(Vector3.one, FLY_DURATION / 2f));
+            flyTo.Join(reward.transform.DOPath(path, FLY_DURATION)
+                .SetEase(Ease.InOutQuad));
+            flyTo.Append(reward.transform.DOScale(Vector3.one / 4f, FLY_DURATION / 2f));
+            flyTo.Join(image.DOFade(0f, FLY_DURATION / 2f)
+                .OnComplete(() => Destroy(reward)));
+            
+            return flyTo;
         }
         
         private Vector3[] CreatePath(Vector3 start, Vector3 end, int resolution = 10)

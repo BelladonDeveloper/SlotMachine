@@ -618,6 +618,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 945549371455153585}
     m_Modifications:
+    - target: {fileID: 3872290397458442003, guid: 471f990d3de2e444590ef29b73db0487, type: 3}
+      propertyPath: ShapeModule.radius.value
+      value: 33
+      objectReference: {fileID: 0}
     - target: {fileID: 6047558784058717954, guid: 471f990d3de2e444590ef29b73db0487, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

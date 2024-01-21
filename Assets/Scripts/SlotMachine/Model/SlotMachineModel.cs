@@ -6,6 +6,13 @@ namespace SlotMachine.Model
     public class SlotMachineModel
     {
         /// <summary>
+        /// Key is the reel number from left to right.
+        /// Value is the prize number in the config symbols list
+        /// TODO: you can save the current symbols in the save file
+        /// </summary>
+        public Dictionary<int, int> CurrentSymbols { get; private set; }
+
+        /// <summary>
         /// Get a random symbols for each reel.
         /// Avoid zero prize because it is a "no prize" state
         /// </summary>
@@ -18,23 +25,23 @@ namespace SlotMachine.Model
         /// </returns>
         public Dictionary<int, int> GetNextSymbols(int reelCount, int maxNumber, bool onlySameSymbols = false)
         {
-            Dictionary<int, int> nextSymbols = new Dictionary<int, int>();
+            CurrentSymbols = new Dictionary<int, int>();
             
             for (int i = 0; i < reelCount; i++)
             {
-                nextSymbols.Add(i, Random.Range(1, maxNumber));
+                CurrentSymbols.Add(i, Random.Range(1, maxNumber));
             }
             
             if (onlySameSymbols)
             {
-                int prize = nextSymbols[0];
+                int prize = CurrentSymbols[0];
                 for (int i = 1; i < reelCount; i++)
                 {
-                    nextSymbols[i] = prize;
+                    CurrentSymbols[i] = prize;
                 }
             }
 
-            return nextSymbols;
+            return CurrentSymbols;
         }
     }
 }

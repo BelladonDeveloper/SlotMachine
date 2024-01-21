@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,6 +21,7 @@ namespace SlotMachine.View
         public int SymbolsCount => _symbols.Count;
         
         [SerializeField] private List<Image> _symbols;
+        [SerializeField] private ParticleSystem _particles;
 
         private ReelAnimator _animator;
         private Sprite[] _sprites;
@@ -90,9 +92,9 @@ namespace SlotMachine.View
         /// </summary>
         private void CheckStopped()
         {
-            if (_animator.CurrentSymbol == _currentNextPrize)
+            _currentPrize = _animator.CurrentSymbol;
+            if (_currentPrize == _currentNextPrize)
             {
-                _currentPrize = _currentNextPrize;
                 _currentNextPrize = -1;
                 _animator.ResetSpeed();
                 
@@ -102,6 +104,19 @@ namespace SlotMachine.View
             {
                 SpinToValue();
             }
+        }
+        
+        public void PlayParticles()
+        {
+            _particles.Play();
+            StopAllCoroutines();
+            StartCoroutine(StopParticles(_particles.main.duration));
+        }
+
+        private IEnumerator StopParticles(float mainDuration)
+        {
+            yield return new WaitForSeconds(mainDuration);
+            _particles.Stop();
         }
     }
 }

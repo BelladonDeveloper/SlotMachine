@@ -96,6 +96,11 @@ namespace SlotMachine.View
         {
             _handle.ChangeInteractable(true);
         }
+
+        public void ShowWinAnimation(Action onCompleted)
+        {
+            _reels.ShowWinAnimation(onCompleted);
+        }
         
         public void Dispose()
         {

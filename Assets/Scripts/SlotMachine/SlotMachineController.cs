@@ -19,7 +19,7 @@ namespace SlotMachine
         /// Invoked when a player wins any prize.
         /// The parameter is the amount of a reward
         /// </summary>
-        public Action<int> OnWin;
+        public event Action<int> OnWin;
         
         private readonly SlotMachineModel _model;
         private readonly SlotMachineView _view;
@@ -96,7 +96,7 @@ namespace SlotMachine
         {
             if (IsHaveWinCombination())
             {
-                InvokeWin();
+                _view.ShowWinAnimation(InvokeWin);
             }
             else
             {

@@ -1,6 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Base;
+using SlotMachine.View.Animators;
 using UnityEngine;
 
 namespace SlotMachine.View
@@ -23,7 +26,7 @@ namespace SlotMachine.View
         public int Count => _reels.Count;
 
         [SerializeField] private List<Reel> _reels;
-
+        
         private Sprite[] _sprites;
 
         private int _stoppedReelsCount;
@@ -119,6 +122,7 @@ namespace SlotMachine.View
             for (int i = 0; i < _reels.Count; i++)
             {
                 yield return new WaitForSeconds(REELS_START_INTERVAL);
+                Register.Get<ISoundManager>().PlaySound(SoundName.ReelSpin);
 
                 if (nextSymbols.TryGetValue(i, out int prize))
                 {
@@ -153,5 +157,11 @@ namespace SlotMachine.View
         }
 
         #endregion
+
+        public void ShowWinAnimation(Action onCompleted)
+        {
+            _reels.ForEach(r => r.PlayParticles());
+            onCompleted?.Invoke();
+        }
     }
 }

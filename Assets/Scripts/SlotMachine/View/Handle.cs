@@ -1,4 +1,5 @@
 using System;
+using Base;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -57,6 +58,7 @@ namespace SlotMachine.View
         private void Click()
         {
             ChangeInteractable(false);
+            Register.Get<ISoundManager>().PlaySound(SoundName.TurnHandle);
             _handleAnimator.Turn();
             OnClick?.Invoke();
         }

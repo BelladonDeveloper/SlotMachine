@@ -43,7 +43,7 @@ namespace SlotMachine
             
             _controller = new SlotMachineController(model, view, config);
             _controller.Init();
-            _controller.OnWin = InvokeWin;
+            _controller.OnWin += InvokeWin;
         }
 
         private void InvokeWin(int rewardAmount)
@@ -65,6 +65,7 @@ namespace SlotMachine
         {
             _controller.Dispose();
             _rewardAnimator.OnAnimationEnded -= ActivateAfterReward;
+            _controller.OnWin -= InvokeWin;
         }
     }
 }
