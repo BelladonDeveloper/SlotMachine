@@ -126,7 +126,8 @@ namespace SlotMachine
         
         private void InvokeWin()
         {
-            int rewardAmount = _config.GetRewardAmount((SymbolsType)_nextSymbols[0]);
+            SymbolsType winType = (SymbolsType)_nextSymbols[0] + 1;
+            int rewardAmount = _config.GetRewardAmount(winType);
             OnWin?.Invoke(rewardAmount);
         }
 
@@ -145,7 +146,7 @@ namespace SlotMachine
         /// </returns>
         private Dictionary<int, int> GetNextSymbols()
         {
-            return _model.GetNextSymbols(_view.ReelsCount, _config.Symbols.Count, _isOnlySameSymbols);            
+            return _model.GetNextSymbols(_view.ReelsCount, _config.Symbols.Count - 1, _isOnlySameSymbols);            
         }
 
         /// <summary>

@@ -14,7 +14,6 @@ namespace SlotMachine.Model
 
         /// <summary>
         /// Get a random symbols for each reel.
-        /// Avoid zero prize because it is a "no prize" state
         /// </summary>
         /// <param name="reelCount"></param>
         /// <param name="maxNumber"> Symbols count </param>
@@ -29,7 +28,7 @@ namespace SlotMachine.Model
             
             for (int i = 0; i < reelCount; i++)
             {
-                CurrentSymbols.Add(i, Random.Range(1, maxNumber));
+                CurrentSymbols.Add(i, Random.Range(0, maxNumber));
             }
             
             if (onlySameSymbols)
